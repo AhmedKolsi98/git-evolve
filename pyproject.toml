@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "git-evolve"
+version = "0.2.0"
+description = "CLI tool to measure code evolution from a base commit"
+readme = "README.md"
+license = "MIT"
+authors = [{name = "Ahmed Kolsi", email = "your.email@example.com"}]
+keywords = ["git", "analytics", "cli", "code-evolution"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "black>=22.0", "flake8>=4.0", "mypy>=0.950"]
+
+[project.scripts]
+git-evolve = "git_evolve.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/git-evolve"
+Repository = "https://github.com/yourusername/git-evolve"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["git_evolve*"]
