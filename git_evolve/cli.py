@@ -1,20 +1,55 @@
-"""CLI interface."""
+"""Command-line interface for git-evolve."""
 import argparse
 import json
 import sys
+from typing import Dict, Any, Optional
 from .analyzer import analyze
 
-def create_ascii_bar(percentage, width=50):
+
+def create_ascii_bar(percentage: float, width: int = 50) -> str:
+    """Create an ASCII progress bar representation.
+    
+    Args:
+        percentage: Value from 0 to 100
+        width: Width of the bar in characters (default: 50)
+    
+    Returns:
+        Formatted ASCII bar with filled and empty segments
+    """
     filled = int(width * percentage / 100)
     return f"[{'█' * filled}{'░' * (width - filled)}]"
 
-def format_number(num):
+
+def format_number(num: int) -> str:
+    """Format a number with thousands separators.
+    
+    Args:
+        num: Integer to format
+    
+    Returns:
+        Formatted string with comma separators
+    """
     return f"{num:,}"
 
-def print_header(text):
+
+def print_header(text: str) -> None:
+    """Print a formatted section header.
+    
+    Args:
+        text: Header text to display
+    """
     print(f"\n{'─' * 60}\n  {text}\n{'─' * 60}")
 
-def print_visual_report(result):
+
+def print_visual_report(result: Dict[str, Any]) -> None:
+    """Print a formatted visual report of analysis results.
+    
+    Displays repository statistics, evolution metrics, and top evolved files
+    with ASCII visualizations.
+    
+    Args:
+        result: Dictionary of analysis results from analyze()
+    """
     repo = result.get("repository", "Unknown")
     base = result.get("base_commit", "Unknown")[:8]
     
@@ -51,7 +86,17 @@ def print_visual_report(result):
     
     print(f"\n{'─' * 60}\n")
 
-def main():
+
+
+
+def main() -> None:
+    """Main entry point for the git-evolve CLI.
+    
+    Parses command-line arguments and runs the code evolution analysis,
+    then outputs results in the requested format.
+    
+    Exits with code 1 on error, 130 on keyboard interrupt.
+    """
     parser = argparse.ArgumentParser(
         description="🧬 Analyze code evolution from a base commit.",
         epilog="Examples: git-evolve --base v1.0.0 | git-evolve --base HEAD~20 --files --timeline"
@@ -89,5 +134,7 @@ def main():
         print("\n⚠️  Interrupted", file=sys.stderr)
         sys.exit(130)
 
+
 if __name__ == "__main__":
     main()
+
