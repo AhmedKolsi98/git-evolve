@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+git_evolve/__init__.py
+git_evolve/analyzer.py
+git_evolve/cli.py
+git_evolve.egg-info/PKG-INFO
+git_evolve.egg-info/SOURCES.txt
+git_evolve.egg-info/dependency_links.txt
+git_evolve.egg-info/entry_points.txt
+git_evolve.egg-info/requires.txt
+git_evolve.egg-info/top_level.txt

@@ -1,0 +1,2 @@
+[console_scripts]
+git-evolve = git_evolve.cli:main

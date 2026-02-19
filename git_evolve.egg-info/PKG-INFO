@@ -1,3 +1,25 @@
+Metadata-Version: 2.4
+Name: git-evolve
+Version: 0.2.0
+Summary: CLI tool to measure code evolution from a base commit
+Author-email: Ahmed Kolsi <your.email@example.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/yourusername/git-evolve
+Project-URL: Repository, https://github.com/yourusername/git-evolve
+Keywords: git,analytics,cli,code-evolution
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Version Control :: Git
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: black>=22.0; extra == "dev"
+Requires-Dist: flake8>=4.0; extra == "dev"
+Requires-Dist: mypy>=0.950; extra == "dev"
+
 # 🧬 git-evolve
 
 > Measure code evolution from any base commit.
@@ -9,11 +31,7 @@ A powerful CLI tool that analyzes how much your codebase has evolved since a spe
 - **Precise Evolution Metrics** - Calculate the percentage of code changed since a base commit using git blame
 - **Per-File Analysis** - Identify which files have evolved the most
 - **Fast Parallel Processing** - Analyze large repositories efficiently with multi-worker support
-- **Flexible Output** - Beautiful ASCII reports, JSON, or CSV export
-- **Color Support** - Enhanced visual output with colors
-- **Progress Tracking** - Show progress for large repositories
-- **File Exclusion** - Exclude specific files or patterns from analysis
-- **Timeline View** - Show commit history between base and HEAD
+- **Flexible Output** - Beautiful ASCII reports, JSON export, or minimal output
 - **Multiple Formats** - Works with commit hashes, tags, branch names, and relative references (e.g., `HEAD~20`)
 
 ## 📋 Requirements
@@ -26,7 +44,7 @@ A powerful CLI tool that analyzes how much your codebase has evolved since a spe
 ### From Source
 
 ```bash
-git clone https://github.com/ahmedkolsi98/git-evolve.git
+git clone https://github.com/yourusername/git-evolve.git
 cd git-evolve
 pip install -e .
 ```
@@ -51,18 +69,6 @@ git-evolve --base main --files
 
 # Export results as JSON
 git-evolve --base v2.0.0 --json
-
-# Export as CSV for data processing
-git-evolve --base v2.0.0 --csv
-
-# Show commit timeline
-git-evolve --base v1.0.0 --timeline
-
-# Exclude specific files or patterns
-git-evolve --base main --exclude "*.pyc,node_modules/*,build/"
-
-# Show progress for large repositories
-git-evolve --base main --progress
 ```
 
 ## 📖 Usage Guide
@@ -80,16 +86,10 @@ git-evolve --base <commit-reference>
 | `--base` (required) | Base commit/tag/branch reference to measure evolution from |
 | `--files` | Show top 10 evolved files with line counts |
 | `--json` | Output results in JSON format (useful for scripts/integrations) |
-| `--csv` | Output results in CSV format |
 | `--quiet` | Minimal output: just the evolution percentage |
 | `--no-parallel` | Disable parallel processing (useful for debugging) |
 | `--workers` | Number of parallel workers (default: 4) |
-| `--timeline` | Show timeline of commits between base and HEAD |
-| `--progress` | Show progress for large repositories |
-| `--exclude` | Comma-separated patterns to exclude |
-| `--color` / `--no-color` | Enable/disable colored output |
-| `--since` | Only analyze commits after this date (ISO format) |
-| `--until` | Only analyze commits before this date (ISO format) |
+| `--timeline` | Show timeline of commits (coming soon) |
 
 ### Examples
 
@@ -101,34 +101,37 @@ git-evolve --base v1.5.0
 
 **Output:**
 ```
-──────────────────────────────────────────────────────
+────────────────────────────────────────────────
 
   🧬 Git Evolve Report: my-project
 
   Base commit: abc1234d
 
-──────────────────────────────────────────────────────
+────────────────────────────────────────────────
 
   📊 Code Statistics
-  ─────────────────────────────────────
+  ────────────────────────────────────────
   Total Lines                    45,230
   Base Lines Surviving           28,145
   Evolved Lines                  17,085
   Files Analyzed                 142
 
   📈 Evolution: 37.78% | Survival: 62.22%
-  [███████████████░░░░░░░░░░░░░░░░░░░░░░░]
+  [███████████████░░░░░░░░░░░░░░░░░░░░░░░░]
 
   📁 Top Evolved Files
-  ─────────────────────────────────────
+  ────────────────────────────────────────
 
    1. src/core/engine.py
       ███████░░░░░░░░░░░░ 67.34% (1,245 lines)
 
    2. src/utils/helpers.py
-      █████░░░░░░░░░░░░░░░ 45.21% (892 lines)
+      █████░░░░░░░░░░░░░░ 45.21% (892 lines)
 
-──────────────────────────────────────────────────────
+   3. src/api/handlers.py
+      ████░░░░░░░░░░░░░░░ 38.90% (756 lines)
+
+────────────────────────────────────────────────
 ```
 
 #### 2. Get JSON Output for CI/CD
@@ -151,22 +154,10 @@ git-evolve --base v2.0.0 --quiet
 42.15%
 ```
 
-#### 4. Export CSV for Analysis
-
-```bash
-git-evolve --base v2.0.0 --csv > evolution_report.csv
-```
-
-#### 5. Analyze with Custom Worker Count
+#### 4. Analyze with Custom Worker Count
 
 ```bash
 git-evolve --base HEAD~50 --files --workers 8
-```
-
-#### 6. Exclude Build Artifacts
-
-```bash
-git-evolve --base v1.0.0 --exclude "*.pyc,__pycache__,node_modules,dist,build"
 ```
 
 ## 🔍 Understanding the Metrics
@@ -192,7 +183,7 @@ Total number of lines that remain unchanged from the base commit.
 ### Setup Development Environment
 
 ```bash
-git clone https://github.com/ahmedkolsi98/git-evolve.git
+git clone https://github.com/yourusername/git-evolve.git
 cd git-evolve
 pip install -e ".[dev]"
 ```
@@ -213,13 +204,6 @@ flake8 git_evolve tests
 mypy git_evolve
 ```
 
-### Using Pre-commit Hooks
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
 ### Project Structure
 
 ```
@@ -229,15 +213,9 @@ git-evolve/
 │   ├── analyzer.py          # Core analysis logic
 │   └── cli.py              # Command-line interface
 ├── tests/                   # Test suite
-│   ├── test_analyzer.py    # Analyzer tests
-│   ├── test_cli.py        # CLI tests
-│   └── conftest.py        # Test fixtures
-├── .github/workflows/       # CI/CD workflows
-│   └── ci.yml             # GitHub Actions configuration
 ├── pyproject.toml          # Project metadata and dependencies
 ├── README.md               # This file
-├── LICENSE                 # MIT License
-└── CONTRIBUTING.md         # Contribution guidelines
+└── LICENSE                 # MIT License
 ```
 
 ## 📊 Use Cases
@@ -276,13 +254,6 @@ Integrate into CI/CD pipelines to track evolution metrics.
     echo "Code Evolution: $EVOLUTION"
 ```
 
-### 5. Exclude Generated Files
-Focus analysis on source code by excluding generated files.
-
-```bash
-git-evolve --base v1.0.0 --exclude "*.pyc,node_modules/*,vendor/*,dist/*"
-```
-
 ## ⚙️ Performance Tips
 
 - **Large Repositories**: Use `--workers` to increase parallel processing
@@ -293,8 +264,6 @@ git-evolve --base v1.0.0 --exclude "*.pyc,node_modules/*,vendor/*,dist/*"
 - **Network Repositories**: Run locally or use `--no-parallel` if network lag causes issues
 
 - **Memory Constraints**: Use `--no-parallel` to reduce memory usage
-
-- **Track Progress**: Use `--progress` to see analysis progress for large repos
 
 ## 🐛 Troubleshooting
 
@@ -321,8 +290,6 @@ Ahmed Kolsi
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
 
 ## 📚 See Also
 
